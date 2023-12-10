@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  mariadb:
+    container_name: mariadb-gitea
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Pass1234
+    volumes:
+      - /var/containerdata/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - gitea
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea
+    restart: always
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000 # Corregido USERGUID a USER_GID
+    volumes:
+      - /var/containerdata/gitea:/data
+    ports:
+      - "3000:3000"
+      - "222:22"
+    networks:
+      - gitea
+networks:
+  gitea:
+    external: false
+

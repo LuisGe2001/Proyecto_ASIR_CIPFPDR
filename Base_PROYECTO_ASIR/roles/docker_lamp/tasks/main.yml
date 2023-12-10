@@ -1,0 +1,37 @@
+---
+- name: Docker LAMP -> Creacion de carpeta contenedores
+  ansible.builtin.file:
+    path: "/root/contenedores"
+    state: directory
+    mode: "0755"
+
+- name: Docker LAMP -> Creacion de la carpeta lamp
+  ansible.builtin.file:
+    path: "/root/contenedores/lamp"
+    state: directory
+    mode: "0755"
+
+- name: Docker LAMP -> Copiado archivo docker-compose.yaml
+  ansible.builtin.copy:
+    src: roles/docker_lamp/templates/docker-compose.yaml.j2
+    dest: /root/contenedores/lamp/docker-compose.yaml
+
+- name: Docker LAMP -> Copiado archivo Dockerfile PHP-Apache
+  ansible.builtin.copy:
+    src: roles/docker_lamp/templates/Dockerfile.j2
+    dest: /root/contenedores/lamp/Dockerfile
+
+- name: Docker LAMP -> Construcción de la imagen PHP-Apache
+  docker_image:
+    source: build
+    build:
+      path: /root/contenedores/lamp
+      pull: yes
+    name: lamp
+    tag: v02
+
+- name: Docker LAMP -> Ejecucion de docker-compose.yaml para el levantamiento de contenedores
+  docker_compose:
+    project_src: /root/contenedores/lamp
+    project_name: docker-compose.yaml
+    state: present
