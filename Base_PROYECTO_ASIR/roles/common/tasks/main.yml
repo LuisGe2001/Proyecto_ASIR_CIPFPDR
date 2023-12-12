@@ -1,0 +1,15 @@
+---
+- name: Epel-release -> Instalación del paquete epel-release
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+
+- name: Python3 -> Instalación del paquete python3
+  ansible.builtin.package:
+    name: python3
+    state: present
+
+- name: Python3 -> Instalacion del paquete python3-mysqlclient
+  ansible.builtin.package:
+    name: python3-mysqlclient
+    state: present

@@ -1,0 +1,17 @@
+---
+- name: Instalación base para app en microservicios
+  hosts: all
+  roles:
+    - common
+    - docker
+    - docker_lamp
+  tags:
+    - microservicios
+
+- name: Instalación base para app local
+  hosts: all
+  roles:
+    - common
+    - local
+  tags:
+    - local
